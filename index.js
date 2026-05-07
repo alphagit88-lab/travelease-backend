@@ -10,9 +10,10 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: [
-    process.env.ADMIN_URL || 'http://localhost:3001',
-    'http://localhost:3000'
-  ],
+    process.env.FRONTEND_URL,
+    'http://localhost:3000',
+    'http://localhost:3001'
+  ].filter(Boolean),
   credentials: true,
 }));
 
