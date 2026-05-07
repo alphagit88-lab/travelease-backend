@@ -58,3 +58,5 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 }
+
+module.exports = app;
