@@ -7,33 +7,12 @@ const galleryRoutes = require('./routes/galleryRoutes');
 
 const app = express();
 
-const ALLOWED_ORIGINS = [
-  'https://travelease-for-vercel.vercel.app', // production frontend (hardcoded fallback)
-  process.env.FRONTEND_URL,                    // production frontend (from env)
-  'http://localhost:3000',
-  'http://localhost:3001',
-].filter(Boolean);
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, curl, Postman)
-    if (!origin) return callback(null, true);
-    if (ALLOWED_ORIGINS.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked: ${origin}`));
-    }
-  },
+// Middleware
+app.use(cors({
+  origin: true,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-// Apply CORS globally
-app.use(cors(corsOptions));
-
-// Explicitly handle OPTIONS preflight requests (required for Vercel serverless)
-app.options('*', cors(corsOptions));
+  optionsSuccessStatus: 200
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
