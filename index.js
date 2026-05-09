@@ -15,9 +15,15 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Static files
+const localUploads = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(localUploads));
+
 const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
-const uploadDir = isVercel ? path.join('/tmp', 'uploads') : path.join(__dirname, 'uploads');
-app.use('/uploads', express.static(uploadDir));
+if (isVercel) {
+  const tmpUploads = path.join('/tmp', 'uploads');
+  app.use('/uploads', express.static(tmpUploads));
+}
 
 // Routes
 app.use('/api/admin', adminRoutes);
